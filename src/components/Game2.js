@@ -16,7 +16,7 @@ const [showEndMessage, setShowEndMessage] = useState(false);
   const [alertType, setAlertType] = useState("success");
   const [message, setMessage] = useState("");
   const [longMessage, setLongMessage] = useState("");
-  const [endLongMessage, setEndLongMessage]=useState("");
+//   const [endLongMessage, setEndLongMessage]=useState("");
   const successMessages = [
     "Great job!",
     "You're amazing!",
@@ -62,7 +62,8 @@ const [showEndMessage, setShowEndMessage] = useState(false);
     let p =
       (100 / (tempDim.n * tempDim.m)) *
       Math.floor(Math.random() * (tempDim.n * tempDim.m + 1));
-    setPercent(p);
+    if(p==0){setPercent((100 / (tempDim.n * tempDim.m)))}
+    else{setPercent(p);}
     console.log(tempDim, p);
   }, [round]);
   const dims = [
@@ -97,8 +98,9 @@ const [showEndMessage, setShowEndMessage] = useState(false);
       setScore(score + nScorePerRound);
     }
     if (round == totalRounds) {
-        if(score==totalRounds*scorePerRound){
-          setLongMessage( "All correct! Great Job");
+        console.log(totalRounds*scorePerRound);
+        if(score>=totalRounds*scorePerRound*0.8){
+          setLongMessage( "Wow! Great Job");
         }
         else if(score>=totalRounds*scorePerRound*0.4){
           setLongMessage("Good Job!");
@@ -124,7 +126,7 @@ const [showEndMessage, setShowEndMessage] = useState(false);
     }, time);
   };
 const resetGame = () => {
-  setRound(0);
+  setRound(1);
   setScore(0);
   setAnswer(0);
   setDim({ n: 2, m: 1 });
