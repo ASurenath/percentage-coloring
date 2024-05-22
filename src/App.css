@@ -1,7 +1,166 @@
-  .main {
+  .App{
+    background-color: rgb(240, 253, 255);
+    min-height: 100vh;
+  }
+  .menu{
     min-height: 50vh;
+    min-width: 70vw;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .main {
+    
     width: 100%;
   }
+  .btn, .btn:hover, .btn:focus, .btn:active{
+    border: black 1px solid;
+    margin: 10px;
+  }
+  .settings-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
 .cursor-none{
-  cursor: none;
+  cursor: none !important;
+  user-select: none !important;
 }
+.grid-container{
+  touch-action: none;
+  max-width: fit-content;
+  margin: auto;
+}
+.grid-item{
+  width:min(7vh,8vw);
+    aspect-ratio: 1/1;
+}
+.custom-menu{
+  position: absolute;
+  cursor: default;
+  z-index: 1000;
+  border-radius: 0.25rem;
+  /* top: 50%;
+  left: 50%; */
+  transform: translate(30%, 60%);
+}
+.alert-container{
+  position: fixed;
+  z-index: 1000;
+  width:100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.288);
+  top: 0;
+  left: 0;
+}
+.alert-box{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.animation-ctn{
+  text-align:center;
+}
+
+	@-webkit-keyframes checkmark {
+    0% {
+        stroke-dashoffset: 100px
+    }
+
+    100% {
+        stroke-dashoffset: 200px
+    }
+}
+
+@-ms-keyframes checkmark {
+    0% {
+        stroke-dashoffset: 100px
+    }
+
+    100% {
+        stroke-dashoffset: 200px
+    }
+}
+
+@keyframes checkmark {
+    0% {
+        stroke-dashoffset: 100px
+    }
+
+    100% {
+        stroke-dashoffset: 0px
+    }
+}
+
+@-webkit-keyframes checkmark-circle {
+    0% {
+        stroke-dashoffset: 480px
+   
+    }
+
+    100% {
+        stroke-dashoffset: 960px;
+      
+    }
+}
+
+@-ms-keyframes checkmark-circle {
+    0% {
+        stroke-dashoffset: 240px
+    }
+
+    100% {
+        stroke-dashoffset: 480px
+    }
+}
+
+@keyframes checkmark-circle {
+    0% {
+        stroke-dashoffset: 480px 
+    }
+
+    100% {
+        stroke-dashoffset: 960px
+    }
+}
+
+@keyframes colored-circle { 
+    0% {
+        opacity:0
+    }
+
+    100% {
+        opacity:100
+    }
+}
+
+/* other styles */
+/* .svg svg {
+    display: none
+}
+ */
+.inlinesvg .svg svg {
+    display: inline
+}
+
+/* .svg img {
+    display: none
+} */
+
+.icon--order-success svg polyline {
+    -webkit-animation: checkmark 0.25s ease-in-out 0.7s backwards;
+    animation: checkmark 0.25s ease-in-out 0.7s backwards
+}
+
+.icon--order-success svg circle {
+    -webkit-animation: checkmark-circle 0.6s ease-in-out backwards;
+    animation: checkmark-circle 0.6s ease-in-out backwards;
+}
+.icon--order-success svg circle#colored {
+    -webkit-animation: colored-circle 0.6s ease-in-out 0.7s backwards;
+    animation: colored-circle 0.6s ease-in-out 0.7s backwards;
+} 
