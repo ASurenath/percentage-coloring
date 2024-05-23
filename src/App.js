@@ -36,7 +36,9 @@ function App() {
 
           <div className='settings-grid'>
             <label htmlFor='color' className='fs-5'>Paint color:</label>
-            <Form.Control type="color" onChange={(e) => { setColor(e.target.value) }} value={color} id='color' />
+            <div className='d-flex align-items-center'><Form.Control type="color" onChange={(e) => { setColor(e.target.value) }} value={color} id='color' />
+            <Button variant='primary' onClick={() => { setColor("#d779a7") }} className='m-0 ms-2 fs-6' title='default'> <i className="fa-solid fa-arrow-rotate-left"></i>Default</Button>
+            </div>
 
             <label htmlFor='rounds' className='fs-5' >Rounds:</label> <Form.Control type="number" min={5} max={50} onChange={(e) => { e.target.value > 50 ? setTotalRounds(50) : e.target.value < 5 ? setTotalRounds(5) : setTotalRounds(e.target.value) }} value={totalRounds} id='rounds' />
             <label htmlFor='score' className='fs-5'>Score per question:</label><Form.Control type="number" min={1} max={50} onChange={(e) => { e.target.value > 50 ? setScorePerRound(50) : e.target.value < 1 ? setScorePerRound(1) : setScorePerRound(e.target.value) }} value={scorePerRound} id='score' />
