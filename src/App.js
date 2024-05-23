@@ -44,7 +44,7 @@ function App() {
             <label htmlFor='score' className='fs-5'>Score per question:</label><Form.Control type="number" min={1} max={50} onChange={(e) => { e.target.value > 50 ? setScorePerRound(50) : e.target.value < 1 ? setScorePerRound(1) : setScorePerRound(e.target.value) }} value={scorePerRound} id='score' />
             <label htmlFor='nSccore' className='fs-5'>Negative score per question:</label> <Form.Control type="number" min={0} max={10} onChange={(e) => { e.target.value > 10 ? setNScorePerRound(10) : e.target.value < 0 ? setNScorePerRound(0) : setNScorePerRound(e.target.value) }} value={nScorePerRound} id='nSccore' />
           </div>
-          <Button onClick={() => { setFrame("menu"); }} className="fs-1 text-bold">Back</Button>
+          <Button onClick={() => { setFrame("menu"); }} className="fs-3 text-bold">Back</Button>
         </div>
       </>
       }
