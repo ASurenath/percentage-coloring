@@ -15,6 +15,8 @@ function Game1({ color,setFrame }) {
   const nMax = 10;
   const mMax = 10;
   const [selectGrid, setSelectGrid] = useState({});
+  const [hoveredBox,setHoveredBox]=useState([-1,-1])
+  const [isSelectGridHovered,setIsSelectGridHovered]=useState(false)
 const [showCustomMenu, setShowCustomMenu] = useState(false);
 useEffect(() => {
   let temp1 = {};
@@ -77,13 +79,16 @@ useEffect(() => {
         >
           <div className="d-flex justify-content-between align-items-center">
             <p>Grid dimention</p>
-            <p>{`${m} x ${n}`}</p>
+            <p>{isSelectGridHovered?`${hoveredBox[0]} x ${hoveredBox[1]}`:`${m} x ${n}`}</p>
             <CloseButton onClick={() => setShowCustomMenu(false)} className="pt-0 mt-0"></CloseButton>
           </div>
           <div
             style={{zIndex:1002,display: "grid",
             gridTemplateColumns: `repeat(${nMax}, 1fr)`,
             gridRowHeight: "1fr",}}
+            onMouseEnter={()=>{setIsSelectGridHovered(true)}}
+            onMouseLeave={()=>{setIsSelectGridHovered(false)}}
+
           >
             
             {Object.values(selectGrid).map((item, index) => (
@@ -91,12 +96,15 @@ useEffect(() => {
                 key={index}
                 style={{width:"100%",height:"100%"}}
                 className="m-1 rounded-0 border-1 border-dark p-0 p-sm-2"
-                variant={item.selected ? "info" : "light"}
+                variant={isSelectGridHovered?(item.n<=hoveredBox[0] && item.m<=hoveredBox[1]?"info":"light"):(item.selected ? "info" : "light")}
                 
                 onClick={() => {
                   console.log("clicked");
                   setN(item.n);
                   setM(item.m);
+                }}
+                onMouseEnter={() => {
+                  setHoveredBox([item.n,item.m]);
                 }}
   >          </Button>
             ))}
@@ -109,9 +117,11 @@ useEffect(() => {
     const touchEvent = e.touches ? e.touches[0] : null;
     const x = !isTouchDevice() ? e.clientX : touchEvent?.clientX || 0;
     const y = !isTouchDevice() ? e.clientY : touchEvent?.clientY || 0;
-
-    setCursorX(x);
-    setCursorY(y);
+    const offsetX = window.scrollX || window.pageXOffset || document.documentElement.scrollLeft;
+    const offsetY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+    
+    setCursorX(x+offsetX);
+    setCursorY(y+offsetY);
   };
   const handleTouchMove = (event) => {
     // Check if touch position is within the element's boundaries
@@ -256,13 +266,17 @@ useEffect(() => {
           ))}
         </div>
         <p className="text-center">
-          ({colored}/{n * m}) X 100{" "}
+        Out of  &nbsp;<span className="fs-3">{(n * m)}</span>&nbsp;box{n * m == 1 ? "" : "es"}, &nbsp;
+           <span className="fs-3">{colored}</span> {colored==1?"box is":"boxes are"} colored. <br/>
+          Which is &nbsp;<span className="fs-3">{colored}/{n * m}</span>&nbsp; part of the grid. <br/>
+          So, <span className="fs-3">({colored}/{n * m}) X 100{" "}</span>
           {((colored / (n * m)) * 100).toFixed(2) == (colored / (n * m)) * 100
             ? "="
-            : "≈"}{" "}
+            : "≈"}&nbsp;
           <span className="fs-1">
-            {Math.round((colored / (n * m)) * 100)}% colored
-          </span>
+            {Math.round((colored / (n * m)) * 100)}% 
+          </span>&nbsp;
+          of the grid is colored
         </p>
       </div>
     </>

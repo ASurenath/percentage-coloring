@@ -3,12 +3,13 @@ import Grid from "./Grid";
 import { Button } from "react-bootstrap";
 import CustomAlert from "./CustomAlert";
 import EndMessage from "./EndMessage";
+import Answer from "./Answer";
 
 function Game2({setFrame,color,totalRounds,scorePerRound,nScorePerRound}) {
   const [round, setRound] = useState(1);
   const [score, setScore] = useState(0);
   const [answer, setAnswer] = useState(0);
-  const [dim, setDim] = useState({ n: 2, m: 1 });
+  const [dim, setDim] = useState({ n: 5, m: 5 });
   const [percent, setPercent] = useState(0);
 const [showEndMessage, setShowEndMessage] = useState(false);
   //   for alert
@@ -16,7 +17,9 @@ const [showEndMessage, setShowEndMessage] = useState(false);
   const [alertType, setAlertType] = useState("success");
   const [message, setMessage] = useState("");
   const [longMessage, setLongMessage] = useState("");
-//   const [endLongMessage, setEndLongMessage]=useState("");
+  const [showAnswer, setShowAnswer] = useState(false);
+
+  const [endLongMessage, setEndLongMessage]=useState("");
   const successMessages = [
     "Great job!",
     "You're amazing!",
@@ -65,6 +68,7 @@ const [showEndMessage, setShowEndMessage] = useState(false);
     if(p==0){setPercent((100 / (tempDim.n * tempDim.m)))}
     else{setPercent(p);}
     console.log(tempDim, p);
+    setShowAnswer(false);
   }, [round]);
   const dims = [
     { n: 2, m: 1 },
@@ -85,35 +89,24 @@ const [showEndMessage, setShowEndMessage] = useState(false);
 //   const scorePerRound = 10;
 //   const nScorePerRound = 0;
   const handleSubmit = () => {
+    let correct
    
     if (answer === percent) {
+      correct = true;
       console.log("correct");
       let lMessage = successMessages[(Math.random() * successMessages.length) | 0];
       showMessage("Correct", 1500, "success",lMessage);
       setScore(score + scorePerRound);
+      setTimeout(() => {
+        next();
+    }, 1500);
     } else {
+      correct=false
       console.log("wrong");
       let lMessage = encoragingMessages[(Math.random() * encoragingMessages.length) | 0];
-      showMessage("Wrong", 1500, "warning",lMessage);
-      setScore(score + nScorePerRound);
+      showMessage("Try again", 1500, "warning",lMessage);
     }
-    if (round == totalRounds) {
-        console.log(totalRounds*scorePerRound);
-        if(score>=totalRounds*scorePerRound*0.8){
-          setLongMessage( "Wow! Great Job");
-        }
-        else if(score>=totalRounds*scorePerRound*0.4){
-          setLongMessage("Good Job!");
-        }
-        else{
-          setLongMessage("Don't give up.Try Again!")
-        }
-        setTimeout(() => {
-            setShowEndMessage(true);
-        }, 1000);
-      } else {
-        setRound(round + 1);
-      }
+   
   };
   //   for alert
   const showMessage = (message, time, type,lMessage) => {
@@ -129,9 +122,31 @@ const resetGame = () => {
   setRound(1);
   setScore(0);
   setAnswer(0);
-  setDim({ n: 2, m: 1 });
+  setDim({ n: 5, m: 5 });
   setPercent(0);
+  setShowEndMessage(false);
+  setShowAnswer(false);
 }
+const next=()=>{
+  if (round == totalRounds) {
+    console.log(totalRounds*scorePerRound);
+    if(score>=totalRounds*scorePerRound*0.8){
+      setEndLongMessage( "Wow! Great Job");
+    }
+    else if(score>=totalRounds*scorePerRound*0.4){
+      setEndLongMessage("Good Job!");
+    }
+    else{
+      setEndLongMessage("Don't give up.Try Again!")
+    }
+    setShowAnswer(false);
+      setShowEndMessage(true);
+ 
+  } else {
+    console.log('round',round);
+    setRound(round + 1)
+  }}
+  
   return (
     <>
     <div className="d-flex justify-content-start align-items-center">
@@ -142,11 +157,13 @@ const resetGame = () => {
       <div>
         <Grid n={dim.n} m={dim.m} color={color} setAnswer={setAnswer} round={round}></Grid>
       </div>
-      <div className="d-flex justify-content-center align-items-center p-3">
-        <Button onClick={handleSubmit} className="fs-3 text-bold">Submit</Button>
+      <div className="d-flex flex-wrap justify-content-evenly align-items-center p-3">
+      <Button variant="primary" onClick={() => {setShowAnswer(true);setScore(score-nScorePerRound);}} className="fs-6 text-bold py-3">Skip & see answer</Button>
+      <Button variant="success" onClick={handleSubmit} className="fs-3 text-bold">Submit</Button>
       </div>
       {showAlert && <CustomAlert message={message} type={alertType} longMessage={longMessage} />}
-      {showEndMessage && <EndMessage score={score} totalScore={totalRounds*scorePerRound} longMessage={longMessage} resetGame={resetGame} setFrame={setFrame} setShowEndMessage={setShowEndMessage}/>}
+      {showEndMessage && <EndMessage score={score} totalScore={totalRounds*scorePerRound} longMessage={endLongMessage} resetGame={resetGame} setFrame={setFrame} setShowEndMessage={setShowEndMessage}/>}
+      {showAnswer && <Answer n={dim.n} m={dim.m} p={percent} next={next} color={color}></Answer>}
     </>
   );
 }

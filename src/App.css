@@ -48,12 +48,17 @@
 }
 .alert-container{
   position: fixed;
-  z-index: 1000;
+  z-index: 1002;
   width:100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.288);
   top: 0;
   left: 0;
+}
+.answer{
+    max-height: 95vh;
+    min-width: min(500px,95vw);
+    overflow-y: auto;
 }
 .alert-box{
   position: absolute;

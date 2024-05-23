@@ -77,11 +77,12 @@ function Grid({ n, m, color, setAnswer, round }) {
     const rect = element.getBoundingClientRect();
     const touchX = event.touches[0].clientX;
     const touchY = event.touches[0].clientY;
-    let col = Math.floor((touchX - rect.left) / (rect.width / n));
-    let row = Math.floor((touchY - rect.top) / (rect.height / m));
-    let index = row * n + col;
-    if (index >= 0 && index < n * m) {
-      setColor(index);
+    let col = Math.floor((touchX - rect.left) / (rect.width / m));
+    let row = Math.floor((touchY - rect.top) / (rect.height / n));
+    let index = row * m + col;
+    // console.log(row,col,index);
+    if(col<m && row<n && col>=0 && row>=0){
+      try{setColor(index);}catch{console.log("err",col,row,index);}
     }
   };
 
